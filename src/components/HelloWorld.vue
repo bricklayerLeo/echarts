@@ -8,7 +8,9 @@
       <div class="column">
         <div class="panel bar">
           <h2>柱形图-就业行业</h2>
-          <div class="chart">图标</div>
+          <div class="chart">
+            <div id="myChart" :style="{width: '100%', height: '100%'}"></div>
+          </div>
           <div class="panel-footer"></div>
         </div>
         <div class="panel line">
@@ -42,6 +44,7 @@
           <div class="map1"></div>
           <div class="map2"></div>
           <div class="map3"></div>
+          <div class="chart">地图模块</div>
         </div>
       </div>
       <div class="column">
@@ -75,7 +78,96 @@ export default {
       time: "",
     };
   },
+  methods: {
+    drawLine() {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      // 绘制图表
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
+      myChart.setOption({
+        color: ["#2f89cf"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "line", // 默认为直线，可选为：'line' | 'shadow'
+          },
+        },
+        //修改图表的大小
+        grid: {
+          left: "0%",
+          right: "0%",
+          bottom: "4%",
+          top: "10px",
+          containLabel: true,
+        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            axisTick: {
+              alignWithLabel: true,
+            },
+            //修改刻度标签相关央视
+            axisLabel: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12",
+              // }
+            },
+            //x轴样式不显示
+            axisLine: {
+              show: false,
+            },
+          },
+        ],
+        yAxis: [
+          {
+            type: "value",
+            //y轴文字标签样式
+            axisLabel: {
+              color: "rgba(255,255,255,.6)",
+              fontSize: "12",
+              // }
+            },
+            //y轴线条样式
+            axisLine: {
+              // show: false,
+              lineStyle: {
+                color: "rgba(255,255,255,.1)",
+              },
+            },
+            //    y轴分割线
+            splitLine: {
+              lineStyle: {
+                color: "rgba(255,255,255,.1)",
+              },
+            },
+          },
+        ],
+        //y轴分割线
+        // splitLine: {
+        //   lineStyle: {
+        //     color: "rgba(255,255,255,.1)",
+        //   },
+        // },
+        series: [
+          {
+            name: "直接访问",
+            type: "bar",
+            barWidth: "35%",
+            data: [10, 52, 200, 334, 390, 330, 220],
+            itemStyle: {
+              barBorderRadius: 5,
+            },
+          },
+        ],
+      });
+    },
+  },
   mounted() {
+    this.drawLine();
     var t = null;
     t = setTimeout(time, 1000); //開始运行
     function time() {
@@ -231,7 +323,7 @@ li {
       }
       .chart {
         height: 3rem;
-        background-color: pink;
+        // background-color: pink;
       }
     }
     .no {
@@ -336,6 +428,14 @@ li {
         background-size: 100% 100%;
         animation: identifier1 15s linear infinite;
         opacity: 0.8;
+      }
+      .chart {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 10.125rem;
+        // background-color: pink;
       }
       @keyframes identifier {
         form {
